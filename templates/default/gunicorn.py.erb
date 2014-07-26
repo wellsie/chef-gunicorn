@@ -25,7 +25,7 @@ workers = multiprocessing.cpu_count() * 2 + 1
 
 
 <% @server_hooks.each_pair do |function, body| -%>
-def <%= function %>(<%= @valid_server_hooks_and_params[function] %>)
+def <%= function %>(<%= @valid_server_hooks_and_params[function] %>):
     <%= body %>
 
 
