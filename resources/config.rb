@@ -24,26 +24,7 @@ attribute :path, :kind_of => String, :name_attribute => true
 attribute :template, :kind_of => String, :default => 'gunicorn.py.erb'
 attribute :cookbook, :kind_of => String, :default => 'gunicorn'
 
-attribute :listen, :kind_of => String, :default => '0.0.0.0:8000'
-attribute :backlog, :kind_of => Integer, :default => 2048
-attribute :preload_app, :kind_of => [TrueClass, FalseClass], :default => false
-
-attribute :worker_processes, :kind_of => Integer, :default => 4
-attribute :worker_class, :kind_of => String, :default => 'sync'
-attribute :worker_timeout, :kind_of => Integer, :default => 60
-attribute :worker_keepalive, :kind_of => Integer, :default => 2
-attribute :worker_max_requests, :kind_of => Integer, :default => 0
-
-attribute :accesslog, :kind_of => String, :default => nil
-attribute :access_log_format, :kind_of => String, :default => nil
-attribute :errorlog, :kind_of => String, :default => nil
-attribute :loglevel, :kind_of => String, :default => nil
-attribute :logger_class, :kind_of => String, :default => nil
-attribute :logconfig, :kind_of => String, :default => nil
-attribute :secure_scheme_headers, :kind_of => Hash, :default => nil
-attribute :forwarded_allow_ips, :kind_of => String, :default => nil
-attribute :proc_name, :kind_of => String, :default => nil
-
+attribute :options, :kind_of => Hash, :default => { :bind => '127.0.0.1:8000' }
 
 attribute :server_hooks, :kind_of => Hash, :default => {}, \
     :callbacks => {
@@ -52,19 +33,30 @@ attribute :server_hooks, :kind_of => Hash, :default => {}, \
 
 attribute :owner, :regex => Chef::Config[:user_valid_regex]
 attribute :group, :regex => Chef::Config[:group_valid_regex]
-attribute :pid, :kind_of => String
 
-VALID_SERVER_HOOK_NAMES = [
-  :on_starting, :on_reload, :when_ready, :pre_fork, :post_fork,
-  :pre_exec, :pre_request, :post_request, :worker_exit
-]
+
+VALID_SERVER_HOOKS_AND_PARAMS = {
+  :on_starting => 'server', 
+  :on_reload => 'server', 
+  :when_ready => 'server', 
+  :pre_fork => 'server, worker', 
+  :post_fork => 'server, worker',
+  :pre_exec => 'server', 
+  :pre_request => 'worker, req', 
+  :post_request => 'worker, req', 
+  :worker_exit => 'server, worker',
+}
+
+attribute :valid_server_hooks_and_params, :kind_of => Hash, :default => VALID_SERVER_HOOKS_AND_PARAMS
+
 
 def initialize(*args)
   super
   @action = :create
 end
 
+
 private
   def self.validate_server_hook_hash_keys(server_hooks)
-    server_hooks.keys.reject{|key| VALID_SERVER_HOOK_NAMES.include?(key.to_sym)}.empty?
+    server_hooks.keys.reject{|key| VALID_SERVER_HOOKS_AND_PARAMS.keys.include?(key.to_sym)}.empty?
   end

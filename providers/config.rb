@@ -20,14 +20,29 @@
 
 action :create do
 
-  Chef::Log.info("Creating #{@new_resource} at #{@new_resource.path}")  unless exists?
+  log("Creating #{@new_resource} at #{@new_resource.path}") unless exists?
 
   template_variables = {}
-  %w{listen backlog preload_app worker_processes worker_class worker_timeout worker_keepalive worker_max_requests server_hooks pid accesslog access_log_format errorlog loglevel logger_class logconfig secure_scheme_headers forwarded_allow_ips proc_name}.each do |a|
-    template_variables[a.to_sym] = new_resource.send(a)
+  # %w{proc_name bind backlog threads}.each do |a|
+  new_resource.send(:options).each_pair do |a, item|
+    # item = new_resource.send(a)
+    if !item.nil?
+      if item.is_a? String
+        template_variables[a.to_sym] = "'#{item}'"
+      elsif item.is_a? Integer
+        template_variables[a.to_sym] = item
+      elsif item.is_a? TrueClass
+        template_variables[a.to_sym] = 'True'
+      elsif item.is_a? FalseClass
+        template_variables[a.to_sym] = 'False'
+      elsif item.is_a? Hash
+        template_variables[a.to_sym] = item
+        
+      end
+    end
   end
 
-  Chef::Log.debug("Using variables #{template_variables} to configure #{@new_resource}")
+  #Chef::Log.debug("Using variables #{template_variables} to configure #{@new_resource}")
 
   config_dir = ::File.dirname(new_resource.path)
 
@@ -42,7 +57,14 @@ action :create do
     mode "0644"
     owner new_resource.owner if new_resource.owner
     group new_resource.group if new_resource.group
-    variables template_variables
+    variables(
+      :name => new_resource.path,
+      :workers => template_variables.delete(:workers), 
+      :options => template_variables, 
+      :server_hooks => new_resource.send(:server_hooks),
+      :valid_server_hooks_and_params => new_resource.send(:valid_server_hooks_and_params),
+    )
+
   end
 
   new_resource.updated_by_last_action(d.updated_by_last_action? || t.updated_by_last_action?)
@@ -51,7 +73,7 @@ end
 action :delete do
   if exists?
     if ::File.writable?(@new_resource.path)
-      Chef::Log.info("Deleting #{@new_resource} at #{@new_resource.path}")
+      log("Deleting #{@new_resource} at #{@new_resource.path}")
       ::File.delete(@new_resource.path)
       new_resource.updated_by_last_action(true)
     else
