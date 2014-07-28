@@ -1,8 +1,10 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
+# Author:: Jono Wells (<schisamo@opscode.com>)
+# Author:: Seth Chisamore (<7@oj.io>)
 # Cookbook Name:: gunicorn
 # Recipe:: default
 #
+# Copyright 2014, Jono Wells
 # Copyright 2011, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +22,6 @@
 
 include_recipe 'python'
 
-gunicorn_install "gunicorn" do
+gunicorn_install 'gunicorn' do
   virtualenv node['gunicorn']['virtualenv']
 end

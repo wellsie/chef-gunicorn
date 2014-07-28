@@ -27,21 +27,20 @@ action :create do
   log("Creating #{@new_resource} at #{@new_resource.path}") unless exists?
 
   template_variables = {}
-  # %w{proc_name bind backlog threads}.each do |a|
-  %w{ bind backlog workers worker_class threads worker_connections max_requests 
+  %w( bind backlog workers worker_class threads worker_connections max_requests
       timeout graceful_timeout keep_alive limit_request_line limit_request_fields
       limit_request_field_size debug reload spew preload_app chdir daemon pidfile
       worker_tmp_dir umask tmp_upload_dir secure_scheme_headers forward_allowed_ips
-      accesslog pythonpath proxy_protocol proxy_allow_ips access_log_format errorlog 
-      loglevel logger_class logconfig syslog_addr syslog syslog_prefix syslog_facility 
-      enable_stdio_inheritance stats_host proc_name keyfile certfile ssl_version cert_reqs 
+      accesslog pythonpath proxy_protocol proxy_allow_ips access_log_format errorlog
+      loglevel logger_class logconfig syslog_addr syslog syslog_prefix syslog_facility
+      enable_stdio_inheritance stats_host proc_name keyfile certfile ssl_version cert_reqs
       ca_certs suppress_ragged_eofs do_handshake_on_connect ciphers
-      }.each do |a|
+  ).each do |a|
     item = new_resource.send(a)
     template_variables[a.to_sym] = item unless item.nil?
   end
 
-  #Chef::Log.debug("Using variables #{template_variables} to configure #{@new_resource}")
+  Chef::Log.debug("Using variables #{template_variables} to configure #{@new_resource}")
 
   config_dir = ::File.dirname(new_resource.path)
 
@@ -53,14 +52,14 @@ action :create do
   t = template new_resource.path do
     source new_resource.template
     cookbook new_resource.cookbook
-    mode "0644"
+    mode '0644'
     owner new_resource.owner if new_resource.owner
     group new_resource.group if new_resource.group
     variables(
       :path => new_resource.path,
-      :options => template_variables, 
+      :options => template_variables,
       :server_hooks => new_resource.send(:server_hooks),
-      :valid_server_hooks_and_params => new_resource.send(:valid_server_hooks_and_params),
+      :valid_server_hooks_and_params => new_resource.send(:valid_server_hooks_and_params)
     )
 
   end
@@ -75,7 +74,7 @@ action :delete do
       ::File.delete(@new_resource.path)
       new_resource.updated_by_last_action(true)
     else
-      raise "Cannot delete #{@new_resource} at #{@new_resource.path}!"
+      fail "Cannot delete #{@new_resource} at #{@new_resource.path}!"
     end
   end
 end
@@ -87,6 +86,7 @@ def load_current_resource
 end
 
 private
-  def exists?
-    ::File.exist?(@current_resource.path)
-  end
+
+def exists?
+  ::File.exist?(@current_resource.path)
+end

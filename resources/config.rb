@@ -65,11 +65,11 @@ attribute :spew, :kind_of => [TrueClass, FalseClass, NilClass], :default => nil
 attribute :preload_app, :kind_of => [TrueClass, FalseClass, NilClass], :default => nil
 attribute :chdir, :kind_of => [String, NilClass], :default => nil
 attribute :daemon, :kind_of => [TrueClass, FalseClass, NilClass], :default => nil
-#attribute :raw_env, :kind_of => [Hash, NilClass], :default => nil
+# attribute :raw_env, :kind_of => [Hash, NilClass], :default => nil
 attribute :pidfile, :kind_of => [String, NilClass], :default => nil
 attribute :worker_tmp_dir, :kind_of => [String, NilClass], :default => nil
-#attribute :user, :kind_of => [Integer, NilClass], :default => nil
-#attribute :group, :kind_of => [Integer, NilClass], :default => nil
+# attribute :user, :kind_of => [Integer, NilClass], :default => nil
+# attribute :group, :kind_of => [Integer, NilClass], :default => nil
 attribute :umask, :kind_of => [Integer, NilClass], :default => nil
 attribute :tmp_upload_dir, :kind_of => [String, NilClass], :default => nil
 attribute :secure_scheme_headers, :kind_of => [Hash, NilClass], :default => nil
@@ -110,39 +110,39 @@ attribute :ciphers, :kind_of => [String, NilClass], :default => nil
 
 # server hooks
 #
-attribute :server_hooks, :kind_of => Hash, :default => {}, \
-    :callbacks => {
-      "should contain a valid gunicorn server hook name" => lambda { |hooks| Chef::Resource::GunicornConfig.validate_server_hook_hash_keys(hooks)}
-    }
-
+attribute :server_hooks,
+          :kind_of => Hash,
+          :default => {},
+          :callbacks => {
+            'should contain a valid gunicorn server hook name' => ->(hooks) { Chef::Resource::GunicornConfig.validate_server_hook_hash_keys(hooks) }
+          }
 
 VALID_SERVER_HOOKS_AND_PARAMS = {
-  :on_starting => 'server', 
-  :on_reload => 'server', 
-  :when_ready => 'server', 
-  :pre_fork => 'server, worker', 
+  :on_starting => 'server',
+  :on_reload => 'server',
+  :when_ready => 'server',
+  :pre_fork => 'server, worker',
   :post_fork => 'server, worker',
   :post_worker_init => 'worker',
   :worker_init => 'worker',
   :worker_abort => 'worker',
-  :pre_exec => 'server', 
-  :pre_request => 'worker, req', 
-  :post_request => 'worker, req, environ, resp', 
+  :pre_exec => 'server',
+  :pre_request => 'worker, req',
+  :post_request => 'worker, req, environ, resp',
   :worker_exit => 'server, worker',
   :nworkers_changed => 'server, new_value, old_value',
-  :on_exit => 'server',
+  :on_exit => 'server'
 }
 
 attribute :valid_server_hooks_and_params, :kind_of => Hash, :default => VALID_SERVER_HOOKS_AND_PARAMS
-
 
 def initialize(*args)
   super
   @action = :create
 end
 
-
 private
-  def self.validate_server_hook_hash_keys(server_hooks)
-    server_hooks.keys.reject{|key| VALID_SERVER_HOOKS_AND_PARAMS.keys.include?(key.to_sym)}.empty?
-  end
+
+def self.validate_server_hook_hash_keys(server_hooks)
+  server_hooks.keys.reject { |key| VALID_SERVER_HOOKS_AND_PARAMS.keys.include?(key.to_sym) }.empty?
+end
