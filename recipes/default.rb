@@ -1,6 +1,6 @@
 #
-# Author:: Jono Wells (<schisamo@opscode.com>)
-# Author:: Seth Chisamore (<7@oj.io>)
+# Author:: Jono Wells (<7@oj.io>)
+# Author:: Seth Chisamore (<schisamo@opscode.com>)
 # Cookbook Name:: gunicorn
 # Recipe:: default
 #
