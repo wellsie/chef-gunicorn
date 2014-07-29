@@ -1,5 +1,5 @@
 #
-# Author:: Jono Wells (<schisamo@opscode.com>)
+# Author:: Jono Wells (<7@oj.io>)
 # Cookbook Name:: gunicorn_test
 # Recipe:: lwrps
 #
