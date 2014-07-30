@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wellsie/chef-gunicorn.svg?branch=develop)](https://travis-ci.org/wellsie/chef-gunicorn)
+
 Description
 ===========
 
@@ -97,10 +99,10 @@ Visit [Gunicorn settings documentation](http://gunicorn.org/settings.html) for d
 License and Authors
 ===================
 
-Author:: Jono Wells(<7@oj.io>)
+Author:: Jono Wells(<7@oj.io>)  
 Author:: Seth Chisamore (<schisamo@opscode.com>)
 
-Copyright:: 2014, Jono Wells
+Copyright:: 2014, Jono Wells  
 Copyright:: 2011, Opscode, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
