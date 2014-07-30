@@ -1,10 +1,9 @@
 #
 # Author:: Jono Wells (<7@oj.io>)
 # Cookbook Name:: gunicorn_test
-# Recipe:: default
+# Recipe:: lwrps
 #
 # Copyright 2014, Jono Wells
-# Copyright 2011, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +18,17 @@
 # limitations under the License.
 #
 
-module Helpers
-  # GunicornTest module
-  module GunicornTest
-    require 'chef/mixin/shell_out'
-    include Chef::Mixin :ShellOut
-    include MiniTest::Chef::Assertions
-    include MiniTest::Chef::Context
-    include MiniTest::Chef::Resources
+require File.expand_path('helpers', File.dirname(__FILE__))
+
+describe 'gunicorn_test::lwrps' do
+  include Helpers::GunicornTest
+
+  it 'creates flaskapp.py gunicorn settings file' do
+    file('/etc/gunicorn/flaskapp.py').must_exist
+  end
+
+  it 'creates an entry for bind' do
+    bind = 'bind'
+    file('/etc/gunicorn/flaskapp.py').must_match(/#{bind}/)
   end
 end

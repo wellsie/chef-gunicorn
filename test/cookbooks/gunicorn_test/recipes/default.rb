@@ -1,7 +1,7 @@
 #
 # Author:: Jono Wells (<7@oj.io>)
 # Cookbook Name:: gunicorn_test
-# Recipe:: lwrps
+# Recipe:: default
 #
 # Copyright 2014, Jono Wells
 #
@@ -18,12 +18,5 @@
 # limitations under the License.
 #
 
-require File.expand_path('../support/helpers', __FILE__)
+include_recipe 'gunicorn'
 
-describe 'gunicorn_test::lwrps' do
-  include Helpers::GunicornTest
-
-  it 'creates flaskapp.py gunicorn settings file' do
-    file('/etc/gunicorn/flaskapp.py').must_exist
-  end
-end

@@ -12,10 +12,12 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[gunicorn::default]
+      - recipe[gunicorn_test::default]
       - recipe[gunicorn_test::lwrps]
-    attributes:
-
+      - recipe[minitest-handler]
+#    attributes:
+#      python:
+#        install_method: source
 #  - name: lwrps
 #    run_list:
 #      - recipe[gunicorn_test::lwrps]
