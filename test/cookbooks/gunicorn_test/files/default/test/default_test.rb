@@ -10,8 +10,7 @@ describe 'gunicorn::default' do
   # this file and in helpers.rb
   include Helpers::GunicornTest
 
-  # For test examples, see: http://bit.ly/1sJO1oC
-  it 'runs no tests' do
-  end
-
+  gunicorn = Mixlib::ShellOut.new('gunicorn -v')
+  gunicorn.run_command
+  gunicorn.error!
 end

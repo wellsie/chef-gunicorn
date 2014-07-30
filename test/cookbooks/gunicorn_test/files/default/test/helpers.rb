@@ -22,6 +22,8 @@
 module Helpers
   # GunicornTest module
   module GunicornTest
+    require 'mixlib/shellout'
+#    include Mixlib::Shellout
     include MiniTest::Chef::Assertions
     include MiniTest::Chef::Context
     include MiniTest::Chef::Resources

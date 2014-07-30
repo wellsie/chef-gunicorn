@@ -19,4 +19,3 @@
 #
 
 include_recipe 'gunicorn'
-
