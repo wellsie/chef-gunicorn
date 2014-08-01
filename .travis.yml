@@ -5,13 +5,15 @@ rvm:
 - 2.1.1
 before_install:
 - 'echo ''gem: --no-ri --no-doc'' > ~/.gemrc'
-- openssl aes-256-cbc -pass "pass:$TRAVIS_CI_SECRET" -in ./travisci.enc -out ./travisci -d -a
 script:
 - bundle exec foodcritic -f any .
 - bundle exec rubocop
 - bundle exec rspec --color --format progress
+- openssl aes-256-cbc -pass "pass:$TRAVIS_CI_SECRET" -in ./travisci.enc -out ./travisci -d -a
+- bundle exec kitchen-test
 env:
   global:
+  - KITCHEN_DRIVER=ec2
   - secure: kJKiWRUoYXDN5rwfJdmNlT5YGjt4Q5cruqKEZ+W2+XMTFHIEqiEn6CHmn5YgnTkNW1hJA+s3NjdJ0wgbR20LyZ53VW5U1GTHXlLBOhPEm/F8uD0E33FTqQPjOYueyhs8x1F9qb8HhKcUhWuzuGpDvUKxM/hhON4Y3ZsCuLNM87A=
   - secure: FKtWG7aGrlcjZcUmYgMRo71exkRc9dQSi2tq6rfrQkJpTBgJocWGdKfp4S+8G1LZiIiFi0OazPzuXzh6c+2ZPuuI1lZkXdwSyyx1LNlX4KSHTbuu5gab2D/qhn8UyIjCazel+aVnQNBTwibN9Zid9D78K763iJOROJAzsckJPcQ=
   - secure: SSM2IQ9QB9GbYYuSrjOPAW//9sw38Qjc2bSSSEPuwq0eRs4S104O8FFVWNZFYzUjJLrsKHGrKvDwn4ORKAbl7tHMKBrNJGpErKi3Jis+QCjpgTfbzzvMB8E8u5KLgquPTeawY6eTiX07Q3QQrUyqR1EFmOeb04rdqf7dsNRgAw8=
