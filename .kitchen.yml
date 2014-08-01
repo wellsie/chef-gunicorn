@@ -1,12 +1,37 @@
+<%
+# Templated based on :: 
+# - https://github.com/btm/minitest-handler-cookbook/blob/master/.kitchen.yml
+%>
+
+<%
+  provisioner = ENV['KITCHEN_PROVISIONER'] || 'chef_zero'
+  omnibus_version = ENV['KITCHEN_OMNIBUS_VER'] || 'true'
+  driver = ENV['KITCHEN_DRIVER'] || 'vagrant'
+%>
+
 ---
 driver:
-  name: vagrant
+  name: <%= driver %>
+  <% if driver == 'ec2' %>
+  availability_zone: us-west-1b
+  region: 'us-west-1'
+  security_groups_ids: ['default']
+  flavor_id: t2.micro
+  ssh_key: <%= ENV['AWS_SSH_KEY'] %>
+  <% end %>
 
 provisioner:
   name: chef_solo
 
 platforms:
+<% if driver == 'vagrant' %>
   - name: centos-6.5
+<% elsif driver == 'ec2' %>
+  - name: amazon-linux-hvm-ebs-64
+    driver:
+      image_id: ami-f0d3d4b5
+      username: ec2-user
+<% end %>
 #  - name: ubuntu-14.04
 
 suites:

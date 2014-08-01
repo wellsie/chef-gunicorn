@@ -1,14 +1,19 @@
 language: ruby
-
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.1
-
+#- 1.9.3
+#- 2.0.0
+- 2.1.1
 before_install:
-  - "echo 'gem: --no-ri --no-doc' > ~/.gemrc"
-
+- 'echo ''gem: --no-ri --no-doc'' > ~/.gemrc'
+- openssl aes-256-cbc -pass "pass:$TRAVIS_CI_SECRET" -in ./travisci.enc -out ./travisci -d -a
 script:
-  - bundle exec foodcritic -f any .
-  - bundle exec rubocop
-  - bundle exec rspec --color --format progress
+- bundle exec foodcritic -f any .
+- bundle exec rubocop
+- bundle exec rspec --color --format progress
+env:
+  global:
+  - secure: kJKiWRUoYXDN5rwfJdmNlT5YGjt4Q5cruqKEZ+W2+XMTFHIEqiEn6CHmn5YgnTkNW1hJA+s3NjdJ0wgbR20LyZ53VW5U1GTHXlLBOhPEm/F8uD0E33FTqQPjOYueyhs8x1F9qb8HhKcUhWuzuGpDvUKxM/hhON4Y3ZsCuLNM87A=
+  - secure: FKtWG7aGrlcjZcUmYgMRo71exkRc9dQSi2tq6rfrQkJpTBgJocWGdKfp4S+8G1LZiIiFi0OazPzuXzh6c+2ZPuuI1lZkXdwSyyx1LNlX4KSHTbuu5gab2D/qhn8UyIjCazel+aVnQNBTwibN9Zid9D78K763iJOROJAzsckJPcQ=
+  - secure: SSM2IQ9QB9GbYYuSrjOPAW//9sw38Qjc2bSSSEPuwq0eRs4S104O8FFVWNZFYzUjJLrsKHGrKvDwn4ORKAbl7tHMKBrNJGpErKi3Jis+QCjpgTfbzzvMB8E8u5KLgquPTeawY6eTiX07Q3QQrUyqR1EFmOeb04rdqf7dsNRgAw8=
+  - secure: Dw5Ny+AvPmtMajMHA58ChW4oDEnVbuzwsjTBvoAcNlg0dmNWdrFjUvhQCNXnEavZPWXZq5Z2wu2iqGum459QrMjW92e3MTs1N6DWfLj9f6lMjBQouB5fvlNX2DqH5yQmLte8QDu+cENMAHlJh3b7R1WA2P2LWKG6XvWH/gC1LWY=
+  - secure: cs8HNSmJ1oq0uXjU+s4nb2cawiA4sd7zgcwCnvkIUoQYRd/vrR0kfZVsSXE0pDJ2BhmXRbgbNNDs5O0Cldn3+sTfl9GYRrUEecfawovNgMLt6LWh89qX0a4OrHZ4R94EXtGV8D70SPRQd4dGQeYoNXZYJv7f6Qzkr/gDCSsU6ek=

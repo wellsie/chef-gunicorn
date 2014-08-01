@@ -8,6 +8,7 @@ end
 gem 'thor-foodcritic'
 gem 'test-kitchen'
 gem 'kitchen-vagrant'
+gem 'kitchen-ec2'
 gem 'chefspec'
 gem 'guard'
 gem 'guard-kitchen'
