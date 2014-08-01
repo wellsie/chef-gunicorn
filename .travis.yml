@@ -10,7 +10,7 @@ script:
 - bundle exec rubocop
 - bundle exec rspec --color --format progress
 - openssl aes-256-cbc -pass "pass:$TRAVIS_CI_SECRET" -in ./travisci.enc -out ./travisci -d -a
-- bundle exec kitchen-test
+- bundle exec kitchen test
 env:
   global:
   - KITCHEN_DRIVER=ec2
