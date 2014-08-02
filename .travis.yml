@@ -3,18 +3,18 @@ rvm:
 - 2.1.1
 before_install:
 - 'echo ''gem: --no-ri --no-doc'' > ~/.gemrc'
+before_script:
+- openssl aes-256-cbc -pass "pass:$TRAVIS_CI_SECRET" -in ./.secret -out "$AWS_SSH_KEY"
+  -d -a
 script:
 - bundle exec foodcritic -f any .
 - bundle exec rubocop
 - bundle exec rspec --color --format progress
-- openssl aes-256-cbc -pass "pass:$TRAVIS_CI_SECRET" -in ./.travisci.enc -out ./.travisci.pem
-  -d -a
-- bundle exec kitchen test
+- KITCHEN_DRIVER=ec2 bundle exec kitchen test
 env:
   global:
-  - KITCHEN_DRIVER=ec2
-  - secure: Qy3B6ytbhGBQg6BQWpNKECWC1OPljI2uH+I9FAuRMsEAESTBA3KaaVXZfadhJHbcwlNB+y8k7+xBK82KGgV+opwUhzb7wv10pBbGYjq3yn1ymWNEZjjO5cFm79kUXpHex6huoY8+PKWIIFztHcemBMGc0Dlzn6pxqSIOeVNaeUI=
-  - secure: DFQnLhpua3mx09stvC9l3/P4186qfUdvr7abXocZW5vnX36Rm5FuYAJTDZIhuCzv1xelS3h21rPA3r8dywW5tlx/D+Xdfeb3CMdIKX9RWPHRkMq3+oxlF+p8zMunvNn5uJeKY8pEMNowPEgB1Gv7ZVziebY27xWK64E9OmlouLc=
-  - secure: T1e0w40nbgnEsM7gV8cr8lEfcjf5SjSBxDaJ4Fhh4VeHVxBd6Te2vKOxTPWxUgVwZ88N0/D6+BO8zSXcVtZm+U698e4DBYWUD7EDBixwdGe0IQSGkia2sbfjCikRodX0oWT9RarVb3OpXSolcMFhgw8ULVFKfRpd+MJVdX8TUrk=
-  - secure: RcN2MPea9DZCWVjE+sFq2KPs97vSOqG34qoOPPm/d4f1Ug9z8P+Th9HfbVk+70AtmKHwmGIXO+YkmDs3M6W1ZmgH1e7wGSs+bbFz0jZLQjAEXyoNjB6l1TVGTdF+knYq4PlBS9/3X/YNAWLxvyIc7q4fMo5+R6GxlOHgskvIikU=
-  - secure: PgUUt0rmqCViqUlwvKJ0B+eRREFy5VAQ+m2f/140SxcqHGGssrNk2oXsxGD0NFY/Gd0+dR9phjmJGLsGmGPMTR1b+/NHnl+PAFlqXplxTl3B+W8w+VgAN6QmFKd9D7Pzw1MllnXLB9QuQ4da2SmvvfNXWgc3I0/1p0ytlIyw8AE=
+  - secure: FoLl9OAqPw/zdOQX+MwIbJ9Dxz848LUrggBFVRUDUXe8pcPZvIib2f2oz3mjNF1Yet25K45XOCLQvve4WqYs8DkYkwOvt2EZEjbHmc56MA/UIgGeltCY80C81CkqpHA7fmgYpmrZGWvbwAFJcQHBOCJtqX/AUYlJeisAfvA9INc=
+  - secure: Pd+ue8MJxF5YAd2rH7fjaTwBE5Otd+w6AHs2GEzSY+ecSlRQn/kIlwed+s/8aR+fKCDF2u5Xyg2vRbTcitemkKZ2aPv/vxwQdk38MfxU4VowsHKu0U63zwMJXp+gJS5e4XaMY7s25zdN0Ut7/LAPLOOEjCLq2jb1IKizPj93Z+8=
+  - secure: i2temASiQNKuJ+5qNPqMWKORanM7EKqJEo5xGic0LUy4x4gYpGVqk8AVJNR5uF3rqXKwx+/OnRaxit2g+oFlT82r7/zbkiyyD4pStxxf8jqZu0p2efD8JkISymzOcOkuKf5JxY/gHULYoUVedbD7vG2HAHrVoUlKvqFe8QPz+MQ=
+  - secure: VPDdFxbuHEOmchezIbiIlYRNHw06cnTD/LOju/TM9ESHYWLOH4qCPr2nGMfqeO6mjp0/WDTqaY1gCGgTfKAiaEydstdMoYZ4sB1OH6B8jWX66C98SeoKKQphlYukaQOv49UYd4l4OqVUsLmZ1sGZSFr33uH0fgPoomZqZFiqdlI=
+  - secure: PE/LbxknbIkeHLCMrwJOfOXFflLOSQ8U+Ahw4YgYV5SOwlzLIOfyte2fsMybzH62f/KBwlfmrXBy040nAC1stnfA2Ri5JD75cp2vocf+b+KspnwIYL11oMz42nRxJyavsuGWdEIAAm7wdTAyLtIDGC5Jmo4rM+0GsHjtg2RBRT8=
