@@ -1,6 +1,7 @@
 #!/bin/sh
 #
-# Author:: Jono Wells (<7@oj.io>)
+# Author:: Jono Wells (_@oj.io)
+# oj.io
 # Encrypt AWS creds for travis-ci
 #
 # Copyright 2014, Jono Wells
@@ -79,3 +80,9 @@ travis encrypt AWS_ACCESS_KEY=$AWS_ACCESS_KEY --add
 travis encrypt AWS_SECRET_KEY=$AWS_SECRET_KEY --add
 travis encrypt AWS_SSH_KEY=$AWS_SSH_KEY --add
 travis encrypt AWS_SSH_KEY_ID=$AWS_SSH_KEY_ID --add
+
+# to decrypt the file do this in .travis.yml
+#
+# before_script:
+# - openssl aes-256-cbc -pass "pass:$TRAVIS_CI_SECRET" -in ./.secret -out "$AWS_SSH_KEY"
+
